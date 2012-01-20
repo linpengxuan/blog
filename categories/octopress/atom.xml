@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | sourrabbit & linpx]]></title>
   <link href="http://colors4.us/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://colors4.us/"/>
-  <updated>2012-01-16T03:01:56-05:00</updated>
+  <updated>2012-01-19T19:54:04-05:00</updated>
   <id>http://colors4.us/</id>
   <author>
     <name><![CDATA[Dong Ping; Lin Pengxuan]]></name>
@@ -12,6 +12,184 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[利用邮件发表octopress博客]]></title>
+    <link href="http://colors4.us/blog/2012/01/19/%E5%88%A9%E7%94%A8%E9%82%AE%E4%BB%B6%E5%8F%91%E8%A1%A8octopress%E5%8D%9A%E5%AE%A2/"/>
+    <updated>2012-01-19T14:25:05-05:00</updated>
+    <id>http://colors4.us/blog/2012/01/19/利用邮件发表octopress博客</id>
+    <content type="html"><![CDATA[<p>看完这篇文章，我想大伙应该就可以实现通过email直接在octopress博客上进行发文。好处相当明显，你不可能永远带着你配置有octopress的电脑，只要手里有手机发邮件，就没有问题。真正做到<strong>anytime
+anywhere</strong>.</p>
+
+<p>写文章的初衷是，本<a href="http://colors4.us">网站</a>是<a href="http://twitter.com/linpx">我</a>和我<a href="http://twitter.com/sourrabbit">太太</a>
+共同经营的博客。很多时候，她写好了文章，委托我发表时，苦于手中的工作windows电脑，发布相当不易。就开始设想有没有这么个功能，用email发布博客。答案是有。在和<a href="http://twitter.com/lucifr">@lucifr</a>交流后，发现<a href="http://twitter.com/masukomi">@masukomi</a>的方法很靠谱，可以使用，于是在不懂任何环境配置的情况下，瞎猫碰到死老鼠地运气和从<code>windows
+95</code>就开始养成的反复安装，反复测试的精神的鼓励下，开始了摸索。</p>
+
+<p>这篇文章适用于在自己域名上布置的octopuses博客，只需<code>rake
+generate</code>就能在nginx上完全反映出内容的变化。如果是用github的朋友，还需多加上<code>rake deploy</code>和相应的<code>git
+commit</code>。实际上从我之前所写的<a href="http://www.colors4.us/blog/2012/01/08/octopressbo-ke-cong-ling-kai-shi-i">Octopress博客从零开始</a>出发，到这篇文章为止，是可以做到零脑损建立octopress博客的。<!--more--></p>
+
+<p>和原来发布方式有个不同的地方是，原来的博文地址都是中文拼音，这次更给力，地址用上中文了。另外，在windows远程登录ssh设置时看到的都是乱码，实际上不影响的，换台mac，就没有问题。</p>
+
+<h4>jekymail配置</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/masukomi/JekyllMail.git /home/wwwroot/jekyllmail
+</span><span class='line'>cd /home/wwwroot/jekyllmail
+</span><span class='line'>rvm --default use 1.9.2
+</span><span class='line'>apt-get install libxslt-dev libxml2-dev
+</span><span class='line'>gem install nokogiri
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>进入jekyllmail文件夹，修改<code>_config.yml</code>,具体内容如下:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>blogs:
+</span><span class='line'>- jekyll_repo: /home/wwwroot/blog     #这是我服务器上布置的octopress博客文件夹
+</span><span class='line'>  source_dir: /home/wwwroot/blog/source   #这个文件夹下包括&lt;em>posts, &lt;/em>includes等
+</span><span class='line'>  pop_server: pop.gmail.com
+</span><span class='line'>  pop_user: xxx  #自定义的邮件接收地址(也就是xxx@gmail.com)
+</span><span class='line'>  pop_password: yyy  #自定义的邮件登录密码
+</span><span class='line'>  secret: 123!  #secret作用为让jekyllmail区别邮件是否为你想要发送的博文，自己设个吧
+</span><span class='line'>  markup: markdown
+</span><span class='line'>  site_url: http://colors4.us  #这里是我的网址
+</span><span class='line'>  commit_after_save: true</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>邮件发送博文牵涉到两个邮件，发送的邮件和接收的邮件，jekyllmail会自己登录到接守的邮件上去检查是否有需要发送的博客。所以，我建议两个都用
+gmail，确认设置中已经打开了pop3支持和utf-8发送。</p>
+
+<p>是不是超级简单。我们现在可以测试一下是否有用。进入自己的gmail信箱给<code>xxx@gmail.com</code>发新邮件，邮件题目subject
+如下，更详细的情况可参考程序作者<a href="http://twitter.com/masukomi">@masukomi</a>的<a href="https://github.com/masukomi/JekyllMail">git页面</a>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>这里是博文的题目中文亦可 || secret: 123! / author: linpx / categories: test ok /
+</span><span class='line'>comments: true      #categories这里很特殊，各种目直接用空格隔开就行了，不要添逗号</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>邮件的内容直接拷入已经写好的markdown格式的文章即可。我建议书写格式去除<code>rich formatting</code>，改用<code>plain text</code> (这是
+gmail内置的功能)。然后点击发送。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>jekyllmail folder </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby jekyllmail.rb</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>如果你能够在<code>/home/wwwroot/blog/source/_posts</code>中看到你刚才发过去的邮件，那么你的jekymail配置就是成功了。(这
+里我首次测试是不成功的，百思不得其解，后来发现发的测试邮件在第一时间被我另一个设好crontab的服务器给接走鸟。-_-!!!)</p>
+
+<h4>ubuntu下cron设置</h4>
+
+<p>很明显，要让博文自动发送，必须有自动机制，程序作者程序作者<a href="http://twitter.com/masukomi">@masukomi</a>
+也建议用cron。cron是linux下的定时器，定时运行程序。我在这里的设置相当乱，因为我对cron不熟悉，能用的原因是我一个一个试出来的，笨方法，大家别学。</p>
+
+<ul>
+<li>cron在运行的时候，是不会采用我们已经有的环境的。所以很多情况下，我们直接运行ruby
+xxx.rb可以，但是在cron下是不行的，因为没有定义rubi环境。这个很重要，我花了3个小时才捉摸出来。</li>
+<li> ubuntu下的cron设置很容易，在任何目录下运行<code>crontab -e</code>就行，存盘出来后应该就是已经放入到系统运行中去啦。</li>
+<li> cron的语法必须要了解，大家可以看看这个<a href="https://help.ubuntu.com/community/CronHowto">页面</a>。</li>
+</ul>
+
+
+<p>我直接给出我可以用的设置，修改文件夹位置后，引用即可。输入<code>crontab
+-e</code>,加到最后一行。内容中涉及到<code>gem</code>和<code>rvw</code>的地址，用<code>which gem</code>和<code>which rvm</code>来确定。
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * /bin/echo "check if cron works" >> /home/wwwroot/1.log&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>此命令为每隔一分钟写入log文件，目的用于测试cron是否正常工作，确认后可直接删除。&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>*/5 * * * * cd /home/wwwroot/jekyllmail &amp;&amp; ./run_jekyllmail.sh&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>每隔5分钟登录检查邮箱，是否有博文，强迫症轻度患者建议改为每一分钟。&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;ul>
+</span><span class='line'>&lt;li>*/2 * * * cd /home/wwwroot/jekyllmail &amp;&amp; ./build_site.sh   #每隔2小时做一次rake generate</span></code></pre></td></tr></table></div></figure></notextile></div>
+cron运行时时不带环境的，所以我们必须在<code>jekyllmail</code>下的两个文件<code>run_jekyllmail.sh</code>和<code>build_site.sh</code>定义环境。分别设定如下：</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>!/bin/sh&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>[[ -s "$HOME/.rvm/scripts/rvm" ]] &amp;&amp; source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session &lt;em>as a function&lt;/em>
+</span><span class='line'>export LANG=en_US.UTF-8
+</span><span class='line'>export GEM_HOME=/usr/local/rvm/gems/ruby-1.9.2-p290
+</span><span class='line'>export GEM_PATH=/usr/local/rvm/gems/ruby-1.9.2-p290:/usr/local/rvm/gems/ruby-1.9.2-p290@global
+</span><span class='line'>export PATH=/usr/local/rvm/gems/ruby-1.9.2-p290/bin:/usr/local/rvm/gems/ruby-1.9.2-p290@global/bin:/usr/local/rvm/rubies/ruby-1.9.2-p290/bin:/usr/local/rvm/bin:$PATH #各机子环境有所不同，确认后代入&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>bundle exec ruby jekyllmail.rb</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>以及</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h1>!/bin/sh&lt;/h1>
+</span><span class='line'>
+</span><span class='line'>&lt;p>[[ -s "$HOME/.rvm/scripts/rvm" ]] &amp;&amp; source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session &lt;em>as a function&lt;/em>
+</span><span class='line'>export LANG=en_US.UTF-8
+</span><span class='line'>export GEM_HOME=/usr/local/rvm/gems/ruby-1.9.2-p290
+</span><span class='line'>export GEM_PATH=/usr/local/rvm/gems/ruby-1.9.2-p290:/usr/local/rvm/gems/ruby-1.9.2-p290@global
+</span><span class='line'>export PATH=/usr/local/rvm/gems/ruby-1.9.2-p290/bin:/usr/local/rvm/gems/ruby-1.9.2-p290@global/bin:/usr/local/rvm/rubies/ruby-1.9.2-p290/bin:/usr/local/rvm/bin:$PATH&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>cd /home/wwwroot/blog/ ＃你的octopuses文件夹目录
+</span><span class='line'>bundle exec rake generate</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>通过cron定时进行<code>rake generate</code>必须补充一下，如果你的网页是放在github上，还需来个<code>rake deploy</code>。</p>
+
+<h4>暂时结语</h4>
+
+<p>上述方法不是最优的，其实我希望可以做到<a href="http://twitter.com/masukomi">@masukomi</a>所写的<a href="http://weblog.masukomi.org/2011/12/19/serving-octopress-from-a-self-hosted-git-repository/">Serving Octopress From a Self-hosted Git Repository</a>
+（中文版可参考<a href="http://twitter.com/lucifr">@lucifr</a>所写博客<a href="http://lucifr.com/2011/12/21/octopress-on-server-and-portable-scheme/">服务器端 Octopress 搭建及移动方案</a>),文中的新博客文章放到特定文件夹后会主动触发<code>rake
+generate</code>，在我看来，这远比用cron被动，反复rake来的即时和漂亮。我在做测试时，失败了，我会在以后继续跟进这个方向，有新的进展，肯定贴出。</p>
+
+<p>博客整到现在还是很开心的。学到东西了，还能留下文字，如果帮助到大伙就更好了。这就是交流的好处吧。欢迎大伙在下面评论中留下各种问题，只要我知道的，会非常乐意交流。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[windows下发布octopress博客的尝试]]></title>
