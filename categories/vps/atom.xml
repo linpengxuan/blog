@@ -4,7 +4,7 @@
   <title><![CDATA[Category: vps | sourrabbit & linpx]]></title>
   <link href="http://colors4.us/blog/categories/vps/atom.xml" rel="self"/>
   <link href="http://colors4.us/"/>
-  <updated>2012-01-19T19:54:04-05:00</updated>
+  <updated>2012-01-25T04:20:07-05:00</updated>
   <id>http://colors4.us/</id>
   <author>
     <name><![CDATA[Dong Ping; Lin Pengxuan]]></name>
@@ -268,6 +268,17 @@
 <li>可以设<code>rkgr</code>为<code>cd ~/blog; rake generate; rake deploy</code></li>
 <li>其实发挥想象力的话，你可以在vps服务器上设立dropbox文件夹，把预设<code>public</code>置入同步文件夹内，我们在本地上用Mou或Byword书写，本地Dropbox存盘，本地rake generate。然后那儿就直接被更新了。这个只是想法，还没有被测试过，以后来整。</li>
 </ul>
+
+
+<h4>给网站添加访问分析 Google Analytics</h4>
+
+<p>我在看了这个<a href="http://www.whatwherewhy.me/colophon/">网页</a>后，发现我还可以添加网站分析，毕竟是自己努力出来的东西，看看大伙是否有兴趣访问还是不错的，不过很多情况是远逊于预期。:)</p>
+
+<ol>
+<li>先于<a href="https://www.google.com/analytics">Google Analytics</a>开通和自己网站相关的服务，比如登记自己的网址，取得GA的Track ID，应该如该样式<code>UA-28584XXX-X</code>.</li>
+<li>修改<code>_config.yml</code>最后部分，将ID置于<code>google_analytics_tracking_id:</code>项目之后，rake一下就行了。</li>
+<li>之后进入GA网站看report吧，你就会知道何时多少人访问过你的网站。</li>
+</ol>
 
 ]]></content>
   </entry>

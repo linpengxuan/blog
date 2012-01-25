@@ -4,7 +4,7 @@
   <title><![CDATA[Category: computer | sourrabbit & linpx]]></title>
   <link href="http://colors4.us/blog/categories/computer/atom.xml" rel="self"/>
   <link href="http://colors4.us/"/>
-  <updated>2012-01-19T19:54:04-05:00</updated>
+  <updated>2012-01-25T04:20:07-05:00</updated>
   <id>http://colors4.us/</id>
   <author>
     <name><![CDATA[Dong Ping; Lin Pengxuan]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[给octopress博客添加category列表]]></title>
+    <link href="http://colors4.us/blog/2012/01/23/%E7%BB%99octopress%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0category-list/"/>
+    <updated>2012-01-23T15:46:39-05:00</updated>
+    <id>http://colors4.us/blog/2012/01/23/给octopress博客添加category-list</id>
+    <content type="html"><![CDATA[<p>在前几篇博客我有提到过，我还不大会设置category
+list。博客有这功能后，当然会更好浏览了。作为一项任务，必须攻克。于是大年初二，家里也没啥亲戚可逛，也没有太多电话短信去发，又上google搜去了，闲着也是闲着，挺好不是？</p>
+
+<h4>设置</h4>
+
+<p>当然还是先得去GitHub上去找前人做好的程序了，这里采用了<a href="https://gist.github.com/nistude">nistude</a>写的<a href="https://gist.github.com/1144723">gist:1144723</a>。
+下面贴出的是我fork后修改的内容。<!--more-->
+<div><script src='https://gist.github.com/1661725.js?file='></script>
+<noscript><pre><code># place this file in your plugins directory and add the tag to your sidebar
+#$ cat source/_includes/asides/categories.html 
+#&lt;section&gt;
+#  &lt;h1&gt;Categories&lt;/h1&gt;
+#  &lt;ul id=&quot;categories&quot;&gt;
+#    {% category_list %}
+#  &lt;/ul&gt;
+#&lt;/section&gt;
+
+module Jekyll
+  class CategoryListTag &lt; Liquid::Tag
+    def render(context)
+      html = &quot;&quot;
+      categories = context.registers[:site].categories.keys
+      categories.sort.each do |category|
+        posts_in_category = context.registers[:site].categories[category].size
+        html &lt;&lt; &quot;&lt;li class='category'&gt;&lt;a href='http://colors4.us/blog/categories/#{category}/'&gt;#{category} (#{posts_in_category})&lt;/a&gt;&lt;/li&gt;\n&quot;
+      end
+      html
+    end
+  end
+end
+
+Liquid::Template.register_tag('category_list', Jekyll::CategoryListTag)</code></pre></noscript></div>
+</p>
+
+<p>我解释一下用法。gist下载后放到<code>octopress/plugins/</code>下即可。然后建立<code>source/_includes/asides/categories.html</code>文件。内容如下：
+<div><script src='https://gist.github.com/1667342.js?file='></script>
+<noscript><pre><code>&lt;section&gt;
+ &lt;h1&gt;Categories&lt;/h1&gt;
+ &lt;ul id=&quot;categories&quot;&gt;
+ {% category_list %}
+ &lt;/ul&gt;
+&lt;/section&gt;</code></pre></noscript></div>
+
+然后我们在<code>_config.yml</code>中的<code>default_asides</code>条目中仿照同类，中括号内加入<code>asides/categories.html</code>就设置完了。这时<code>rake
+generate</code>一下就出来了。</p>
+
+<h4>需要注意的地方</h4>
+
+<ul>
+<li> 第一个gist文件17行设置的为category的绝对路径，可按需进行修改。</li>
+<li> 不完善的地方是，它无法辨识带有大写字母的category或是中间有空格的单词串category。所以我昨天花了不少时间进入原来的博文，修改原有的category。既然我需要的基本功能可以使用，就不多折腾啦。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[利用邮件发表octopress博客]]></title>
@@ -76,9 +137,7 @@ gmail，确认设置中已经打开了pop3支持和utf-8发送。</p>
 如下，更详细的情况可参考程序作者<a href="http://twitter.com/masukomi">@masukomi</a>的<a href="https://github.com/masukomi/JekyllMail">git页面</a>:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>这里是博文的题目中文亦可 || secret: 123! / author: linpx / categories: test ok /
-</span><span class='line'>comments: true      #categories这里很特殊，各种目直接用空格隔开就行了，不要添逗号</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</pre></td><td class='code'><pre><code class=''><span class='line'>这里是博文的题目中文亦可 || secret: 123! / author: linpx / categories: test ok /comments: true      #categories这里很特殊，各种目直接用空格隔开就行了，不要添逗号</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>邮件的内容直接拷入已经写好的markdown格式的文章即可。我建议书写格式去除<code>rich formatting</code>，改用<code>plain text</code> (这是
 gmail内置的功能)。然后点击发送。</p>
@@ -108,26 +167,10 @@ xxx.rb可以，但是在cron下是不行的，因为没有定义rubi环境。这
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * /bin/echo "check if cron works" >> /home/wwwroot/1.log&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>此命令为每隔一分钟写入log文件，目的用于测试cron是否正常工作，确认后可直接删除。&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;p>*/5 * * * * cd /home/wwwroot/jekyllmail &amp;&amp; ./run_jekyllmail.sh&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;h1>每隔5分钟登录检查邮箱，是否有博文，强迫症轻度患者建议改为每一分钟。&lt;/h1>
-</span><span class='line'>
-</span><span class='line'>&lt;ul>
-</span><span class='line'>&lt;li>*/2 * * * cd /home/wwwroot/jekyllmail &amp;&amp; ./build_site.sh   #每隔2小时做一次rake generate</span></code></pre></td></tr></table></div></figure></notextile></div>
-cron运行时时不带环境的，所以我们必须在<code>jekyllmail</code>下的两个文件<code>run_jekyllmail.sh</code>和<code>build_site.sh</code>定义环境。分别设定如下：</li>
-</ul>
-
+</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * /bin/echo "check if cron works" >> /home/wwwroot/1.log #此命令为每隔一分钟写入log文件，目的用于测试cron是否正常工作，确认后可直接删除。
+</span><span class='line'>&lt;em>/5 * * * * cd /home/wwwroot/jekyllmail &amp;&amp; ./run_jekyllmail.sh #每隔5分钟登录检查邮箱，是否有博文，强迫症轻度患者建议改为每一分钟。
+</span><span class='line'>* &lt;/em>/2 * * * cd /home/wwwroot/jekyllmail &amp;&amp; ./build_site.sh   #每隔2小时做一次rake generate</span></code></pre></td></tr></table></div></figure></notextile></div>
+cron运行时时不带环境的，所以我们必须在<code>jekyllmail</code>下的两个文件<code>run_jekyllmail.sh</code>和<code>build_site.sh</code>定义环境。分别设定如下：</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -187,7 +230,9 @@ cron运行时时不带环境的，所以我们必须在<code>jekyllmail</code>�
 （中文版可参考<a href="http://twitter.com/lucifr">@lucifr</a>所写博客<a href="http://lucifr.com/2011/12/21/octopress-on-server-and-portable-scheme/">服务器端 Octopress 搭建及移动方案</a>),文中的新博客文章放到特定文件夹后会主动触发<code>rake
 generate</code>，在我看来，这远比用cron被动，反复rake来的即时和漂亮。我在做测试时，失败了，我会在以后继续跟进这个方向，有新的进展，肯定贴出。</p>
 
-<p>博客整到现在还是很开心的。学到东西了，还能留下文字，如果帮助到大伙就更好了。这就是交流的好处吧。欢迎大伙在下面评论中留下各种问题，只要我知道的，会非常乐意交流。</p>
+<p>如果对octopress这么多命令行没啥把握的话，不用怕。知难而上，做出来才爽啊。很多时候，在执行命令的时候，就直接给提示哪儿出错了。我们需要做得就是把错误信息google一下就行啦。因为出现的错误，肯定在别人处出现过，也肯定被解决过。而在寻找解决方法的过程，本身就是一种学习。另外，得有发散思维，一条程序线下来，出错了，有多种可能性，写下来，一个个设计试验来确定是否出错，排除。</p>
+
+<p>博客整到现在还是很开心的。学到东西了，还能留下文字，如果帮助到大伙就更好了。这就是交流的好处吧。欢迎大伙在下面评论中留下各种问题，只要我知道的，会非常乐意互相沟通。</p>
 ]]></content>
   </entry>
   
@@ -479,6 +524,17 @@ generate</code>，在我看来，这远比用cron被动，反复rake来的即时
 <li>其实发挥想象力的话，你可以在vps服务器上设立dropbox文件夹，把预设<code>public</code>置入同步文件夹内，我们在本地上用Mou或Byword书写，本地Dropbox存盘，本地rake generate。然后那儿就直接被更新了。这个只是想法，还没有被测试过，以后来整。</li>
 </ul>
 
+
+<h4>给网站添加访问分析 Google Analytics</h4>
+
+<p>我在看了这个<a href="http://www.whatwherewhy.me/colophon/">网页</a>后，发现我还可以添加网站分析，毕竟是自己努力出来的东西，看看大伙是否有兴趣访问还是不错的，不过很多情况是远逊于预期。:)</p>
+
+<ol>
+<li>先于<a href="https://www.google.com/analytics">Google Analytics</a>开通和自己网站相关的服务，比如登记自己的网址，取得GA的Track ID，应该如该样式<code>UA-28584XXX-X</code>.</li>
+<li>修改<code>_config.yml</code>最后部分，将ID置于<code>google_analytics_tracking_id:</code>项目之后，rake一下就行了。</li>
+<li>之后进入GA网站看report吧，你就会知道何时多少人访问过你的网站。</li>
+</ol>
+
 ]]></content>
   </entry>
   
@@ -628,83 +684,6 @@ generate</code>，在我看来，这远比用cron被动，反复rake来的即时
 </span><span class='line'>vi source/_posts/2012-01-07-filename.markdown #起名方式为日期，然后跟着post名称，如果是中文的话，会自动被整理成拼音,记得在开篇设置author: name以及category: 类别等
 </span><span class='line'>rake generate
 </span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress博客从零开始 I]]></title>
-    <link href="http://colors4.us/blog/2012/01/08/octopressbo-ke-cong-ling-kai-shi-i/"/>
-    <updated>2012-01-08T07:45:00-05:00</updated>
-    <id>http://colors4.us/blog/2012/01/08/octopressbo-ke-cong-ling-kai-shi-i</id>
-    <content type="html"><![CDATA[<p>本文的写作原则是以我这个没有学过程序的文科同学为基础，所以会有很多其他哥们看了觉得没事，可在我这就得想破脑袋才能整出来的(呵呵，擦汗)。写这篇文章的两个原因是，向别人分享我安装这个的经验，减少无用功；以及可以让我以后在更换服务器的时候，不用浪费太多时间在我曾经做成过的东西。这次的策略是，我只打算用vps上的octopress来更新博客，简单些，应该好些。放在vps上更新的好处是，换了电脑也能更新博客，只要有ssh软件的话。<!--more--></p>
-
-<p>到<a href="http://www.webhostingtalk.com/forumdisplay.php?f=104">这儿</a>来挑个你心仪的VPS服务吧。我选择了<a href="http://inceptionhosting.com/">inceptionhosting</a>,4欧元可以拿到美国的Xen VPS，256MB，以及直接就可以安装设置好openvpn的distro。我认为这是个相当不错的选择。</p>
-
-<p>购买之后，进入VPS control panel，选择安装设置好openvpn的ubuntu 32bit就可以了。（这个distro只是个人爱好。）</p>
-
-<p>然后就是SSH进入已经设置好的服务器<code>ssh root@x.x.x.x</code>。这里，我可能会想用免密码登录ssh，那么可以参考这篇<a href="http://www.chinaunix.net/jh/4/548851.html">文章</a>;<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>本地 </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa
-</span><span class='line'>ssh root@x.x.x.x "mkdir .ssh;chmod 0700 .ssh"
-</span><span class='line'>scp ~/.ssh/id_rsa.pub root@x.x.x.x:.ssh/id_rsa.pub</span></code></pre></td></tr></table></div></figure></notextile></div>
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>VPS </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>touch /root/.ssh/authorized_keys2;cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys2</span></code></pre></td></tr></table></div></figure></notextile></div>进去后就先设置一下合用的openvpn帐户。这里我用
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>passwd openvpn</span></code></pre></td></tr></table></div></figure></notextile></div>
-先设置好密码，然后就可以登录<code>http://x.x.x.x:943</code>根据提示下载<code>client.ovpn</code>进行openvpn连接。是不是有种史上最快vpn设置的感觉。lol
-然后请倒上一杯咖啡移步<a href="http://hulu.com">Hulu</a>或是<a href="http://www.spotify.com">Spotify</a>(下文没有提示，所有操作都默认在VPS上进行)。</p>
-
-<p>设置好一些基本语言环境内容。
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>echo "export LC_ALL=en_US.UTF-8" >> /etc/environment
-</span><span class='line'>echo "export LANG=en_US.UTF-8" >> /etc/environment #设置后需要reboot
-</span><span class='line'>locale #可以用locale查看一下环境变量</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>上了VPS要是不走个VPN，我这老脸还真不好意思。因为在已经又openvpn上的系统上整vpn相当容易。我这里参考了这篇<a href="http://blog.cuoluo.net/2009/12/install-pptp-vpn-in-linode-vps/">文章</a>（呵呵，主要这是google搜索跳出的文章）。
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get update
-</span><span class='line'>apt-get install pptpd vim #iptables也是要装的，我的distro已经包括所以省略了
-</span><span class='line'>echo "localip 192.168.0.1" >> /etc/pptpd.conf; echo "remoteip 192.168.0.234-238,192.168.0.245" >> /etc/pptpd.conf
-</span><span class='line'>echo "username pptpd passwd *" >> /etc/ppp/chap-secrets
-</span><span class='line'>echo "ms-dns 8.8.8.8" >> /etc/ppp/options;echo "ms-dns 8.8.4.4" >> /etc/ppp/options
-</span><span class='line'>echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-</span><span class='line'>sysctl -p
-</span><span class='line'>/sbin/iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
-</span><span class='line'>/etc/init.d/pptpd restart</span></code></pre></td></tr></table></div></figure></notextile></div>
-上面这段代码用在ubuntu 11或10上都能够直接连接上vpn，用户名和密码请相应做出修改。它不能做得是，在vps重启动以后，需要单独再运行一下这条命令。
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/sbin/iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE</span></code></pre></td></tr></table></div></figure></notextile></div>
-呵呵，我比较不太懂怎么自启动运行，回头整好了，再统一更新。我个人是用这个土方法来解决。
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>echo "/sbin/iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE" >> ipt.sh
-</span><span class='line'>chmod 755 ipt.sh
-</span><span class='line'>./ipt.sh #每次启动运行一次吧，希望不用太多重启。</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>在使用vim时，我感觉对光标控制和输入很无力，参考<a href="http://www.chinavim.org/vim-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E7%AE%80%E4%BB%8B.html">vim的使用方法</a>后，才觉得vim真好用，真是好用啊。</p>
-
-<p>到目前为止，在vps上实现了如下几个用途：</p>
-
-<ol>
-<li>免密码登录ssh</li>
-<li>设置openvpn</li>
-<li>设置vpn</li>
-</ol>
-
 ]]></content>
   </entry>
   

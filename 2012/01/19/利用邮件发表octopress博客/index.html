@@ -33,6 +33,18 @@ anywhere. 写文章的初衷是，本网站是我和我太太
 <link href='http://fonts.googleapis.com/css?family=Ruge+Boogie|Ruthie|Flavors|Rancho|Galdeano' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-28584476-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -60,6 +72,7 @@ anywhere. 写文章的初衷是，本网站是我和我太太
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-us">Digital Traces</a></li>
 </ul>
 
 </nav>
@@ -155,9 +168,7 @@ gmail，确认设置中已经打开了pop3支持和utf-8发送。</p>
 如下，更详细的情况可参考程序作者<a href="http://twitter.com/masukomi">@masukomi</a>的<a href="https://github.com/masukomi/JekyllMail">git页面</a>:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>这里是博文的题目中文亦可 || secret: 123! / author: linpx / categories: test ok /
-</span><span class='line'>comments: true      #categories这里很特殊，各种目直接用空格隔开就行了，不要添逗号</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>这里是博文的题目中文亦可 || secret: 123! / author: linpx / categories: test ok /comments: true      #categories这里很特殊，各种目直接用空格隔开就行了，不要添逗号</span></code></pre></td></tr></table></div></figure>
 
 
 <p>邮件的内容直接拷入已经写好的markdown格式的文章即可。我建议书写格式去除<code>rich formatting</code>，改用<code>plain text</code> (这是
@@ -190,12 +201,8 @@ xxx.rb可以，但是在cron下是不行的，因为没有定义rubi环境。这
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * /bin/echo "check if cron works" >> /home/wwwroot/1.log
-</span><span class='line'>#此命令为每隔一分钟写入log文件，目的用于测试cron是否正常工作，确认后可直接删除。
-</span><span class='line'>*/5 * * * * cd /home/wwwroot/jekyllmail && ./run_jekyllmail.sh
-</span><span class='line'>#每隔5分钟登录检查邮箱，是否有博文，强迫症轻度患者建议改为每一分钟。
+</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * /bin/echo "check if cron works" >> /home/wwwroot/1.log #此命令为每隔一分钟写入log文件，目的用于测试cron是否正常工作，确认后可直接删除。
+</span><span class='line'>*/5 * * * * cd /home/wwwroot/jekyllmail && ./run_jekyllmail.sh #每隔5分钟登录检查邮箱，是否有博文，强迫症轻度患者建议改为每一分钟。
 </span><span class='line'>* */2 * * * cd /home/wwwroot/jekyllmail && ./build_site.sh   #每隔2小时做一次rake generate</span></code></pre></td></tr></table></div></figure>
 
 
@@ -253,7 +260,9 @@ xxx.rb可以，但是在cron下是不行的，因为没有定义rubi环境。这
 （中文版可参考<a href="http://twitter.com/lucifr">@lucifr</a>所写博客<a href="http://lucifr.com/2011/12/21/octopress-on-server-and-portable-scheme/">服务器端 Octopress 搭建及移动方案</a>),文中的新博客文章放到特定文件夹后会主动触发<code>rake
 generate</code>，在我看来，这远比用cron被动，反复rake来的即时和漂亮。我在做测试时，失败了，我会在以后继续跟进这个方向，有新的进展，肯定贴出。</p>
 
-<p>博客整到现在还是很开心的。学到东西了，还能留下文字，如果帮助到大伙就更好了。这就是交流的好处吧。欢迎大伙在下面评论中留下各种问题，只要我知道的，会非常乐意交流。</p>
+<p>如果对octopress这么多命令行没啥把握的话，不用怕。知难而上，做出来才爽啊。很多时候，在执行命令的时候，就直接给提示哪儿出错了。我们需要做得就是把错误信息google一下就行啦。因为出现的错误，肯定在别人处出现过，也肯定被解决过。而在寻找解决方法的过程，本身就是一种学习。另外，得有发散思维，一条程序线下来，出错了，有多种可能性，写下来，一个个设计试验来确定是否出错，排除。</p>
+
+<p>博客整到现在还是很开心的。学到东西了，还能留下文字，如果帮助到大伙就更好了。这就是交流的好处吧。欢迎大伙在下面评论中留下各种问题，只要我知道的，会非常乐意互相沟通。</p>
 </div>
 
 
@@ -306,6 +315,8 @@ generate</code>，在我看来，这远比用cron被动，反复rake来的即时
         <a class="basic-alignment left" href="/blog/2012/01/16/windowsxia-fa-bu-octopressbo-ke-de-chang-shi/" title="Previous Post: windows下发布octopress博客的尝试">&laquo; windows下发布octopress博客的尝试</a>
       
       
+        <a class="basic-alignment right" href="/blog/2012/01/21/words-written-on-dec-29-of-this-lunar-rabbit-year/" title="next Post: Words written on Dec 29 of this Lunar Rabbit Year">Words written on Dec 29 of this Lunar Rabbit Year &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -325,6 +336,14 @@ generate</code>，在我看来，这远比用cron被动，反复rake来的即时
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/01/23/%E7%BB%99octopress%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0category-list/">给octopress博客添加category列表</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/21/words-written-on-dec-29-of-this-lunar-rabbit-year/">Words written on Dec 29 of this Lunar Rabbit Year</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/01/19/%E5%88%A9%E7%94%A8%E9%82%AE%E4%BB%B6%E5%8F%91%E8%A1%A8octopress%E5%8D%9A%E5%AE%A2/">利用邮件发表octopress博客</a>
       </li>
     
@@ -334,14 +353,6 @@ generate</code>，在我看来，这远比用cron被动，反复rake来的即时
     
       <li class="post">
         <a href="/blog/2012/01/16/xin-yi-fu-he-xin-fang-zi/">新衣服和新房子</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/14/han-guo-zu-wu-ji-lu/">韩国租屋纪录</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/09/jiang-you-jun-de-pang-guan-ji-lu/">酱油君的旁观记录</a>
       </li>
     
   </ul>
@@ -363,6 +374,29 @@ generate</code>，在我看来，这远比用cron被动，反复rake来的即时
   
 </section>
 
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+ <li class='category'><a href='http://colors4.us/blog/categories/computer/'>computer (13)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/job/'>job (5)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/jokes/'>jokes (32)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/korea/'>korea (2)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/life/'>life (104)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/miscellaneous/'>miscellaneous (5)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/movie/'>movie (10)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/octopress/'>octopress (6)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/photo/'>photo (31)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/reading/'>reading (6)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/scribble/'>scribble (1)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/society/'>society (14)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/thoughts/'>thoughts (2)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/travel/'>travel (8)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/vps/'>vps (3)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/旧闻/'>旧闻 (2)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/爱好/'>爱好 (2)</a></li>
+
+ </ul>
+</section>
 
   
 </aside>

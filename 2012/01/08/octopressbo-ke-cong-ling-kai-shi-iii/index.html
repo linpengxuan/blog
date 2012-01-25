@@ -31,6 +31,18 @@
 <link href='http://fonts.googleapis.com/css?family=Ruge+Boogie|Ruthie|Flavors|Rancho|Galdeano' rel='stylesheet' type='text/css'>
 
   
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-28584476-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
 
 </head>
 
@@ -58,6 +70,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-us">Digital Traces</a></li>
 </ul>
 
 </nav>
@@ -341,6 +354,17 @@
 <li>其实发挥想象力的话，你可以在vps服务器上设立dropbox文件夹，把预设<code>public</code>置入同步文件夹内，我们在本地上用Mou或Byword书写，本地Dropbox存盘，本地rake generate。然后那儿就直接被更新了。这个只是想法，还没有被测试过，以后来整。</li>
 </ul>
 
+
+<h4>给网站添加访问分析 Google Analytics</h4>
+
+<p>我在看了这个<a href="http://www.whatwherewhy.me/colophon/">网页</a>后，发现我还可以添加网站分析，毕竟是自己努力出来的东西，看看大伙是否有兴趣访问还是不错的，不过很多情况是远逊于预期。:)</p>
+
+<ol>
+<li>先于<a href="https://www.google.com/analytics">Google Analytics</a>开通和自己网站相关的服务，比如登记自己的网址，取得GA的Track ID，应该如该样式<code>UA-28584XXX-X</code>.</li>
+<li>修改<code>_config.yml</code>最后部分，将ID置于<code>google_analytics_tracking_id:</code>项目之后，rake一下就行了。</li>
+<li>之后进入GA网站看report吧，你就会知道何时多少人访问过你的网站。</li>
+</ol>
+
 </div>
 
 
@@ -414,6 +438,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/01/23/%E7%BB%99octopress%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0category-list/">给octopress博客添加category列表</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/21/words-written-on-dec-29-of-this-lunar-rabbit-year/">Words written on Dec 29 of this Lunar Rabbit Year</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/01/19/%E5%88%A9%E7%94%A8%E9%82%AE%E4%BB%B6%E5%8F%91%E8%A1%A8octopress%E5%8D%9A%E5%AE%A2/">利用邮件发表octopress博客</a>
       </li>
     
@@ -423,14 +455,6 @@
     
       <li class="post">
         <a href="/blog/2012/01/16/xin-yi-fu-he-xin-fang-zi/">新衣服和新房子</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/14/han-guo-zu-wu-ji-lu/">韩国租屋纪录</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/01/09/jiang-you-jun-de-pang-guan-ji-lu/">酱油君的旁观记录</a>
       </li>
     
   </ul>
@@ -452,6 +476,29 @@
   
 </section>
 
+<section>
+ <h1>Categories</h1>
+ <ul id="categories">
+ <li class='category'><a href='http://colors4.us/blog/categories/computer/'>computer (13)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/job/'>job (5)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/jokes/'>jokes (32)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/korea/'>korea (2)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/life/'>life (104)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/miscellaneous/'>miscellaneous (5)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/movie/'>movie (10)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/octopress/'>octopress (6)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/photo/'>photo (31)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/reading/'>reading (6)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/scribble/'>scribble (1)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/society/'>society (14)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/thoughts/'>thoughts (2)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/travel/'>travel (8)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/vps/'>vps (3)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/旧闻/'>旧闻 (2)</a></li>
+<li class='category'><a href='http://colors4.us/blog/categories/爱好/'>爱好 (2)</a></li>
+
+ </ul>
+</section>
 
   
 </aside>
